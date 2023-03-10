@@ -10,11 +10,25 @@ export const GET_COLLECTIONS_BY_TYPE = (contentTypeId) => ({
     method: 'get'
 });
 
-export const CREATE_COLLECTION = (contentTypeId) => ({
+export const CREATE_COLLECTION = (contentTypeId, data) => ({
     url: `/api/collection/create/${contentTypeId}`,
-    method: 'post'
+    method: 'post',
+    data: {
+        ...data
+    }
 });
 
-// export const UPDATE_COLLECTION = (collectionId) => ({
+export const GET_FIELDS_BY_CONTENT_TYPE = (contentTypeId) => ({
+    url: `/api/content/${contentTypeId}/field`,
+    method: 'get'
+});
 
-// export const DELETE_COLLECTION = (collectionId) => ({
+export const UPDATE_FIELD_VALUE = (collectionId, fieldId, data) => ({
+    url: `/api/collection/${collectionId}/field/${fieldId}`,
+    method: 'put',
+    data: {
+        ...data
+    }
+});
+
+

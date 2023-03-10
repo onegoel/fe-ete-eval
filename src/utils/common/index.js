@@ -1,5 +1,5 @@
 import makeRequest from '../makeRequest'
-import { GET_CONTENT_TYPES, GET_COLLECTIONS_BY_TYPE } from '../../constants/apiEndPoints';
+import { GET_CONTENT_TYPES, GET_COLLECTIONS_BY_TYPE, GET_FIELDS_BY_CONTENT_TYPE } from '../../constants/apiEndPoints';
 
 
 export const getAllContentTypesWithId = async (navigate) => {
@@ -15,7 +15,7 @@ export const getAllCollectionsByContentType = async (contentTypeId, navigate) =>
     const response = await makeRequest(GET_COLLECTIONS_BY_TYPE(contentTypeId), {}, navigate, 'api');
     console.log(response);
     const { collection } = response.data;
-    console.log('collection', collection);
+    // console.log('collection', collection);
     const records = collection.map((item) => {
         const record = {
             collectionId: item.id,
@@ -27,4 +27,10 @@ export const getAllCollectionsByContentType = async (contentTypeId, navigate) =>
     });
 
     return records;
+}
+
+export const getFieldsByContentTypeId = async (contentTypeId, navigate) => {
+    const response = await makeRequest(GET_FIELDS_BY_CONTENT_TYPE(contentTypeId), {}, navigate, 'api');
+    const fields = response.data.fields;
+    return fields;
 }
