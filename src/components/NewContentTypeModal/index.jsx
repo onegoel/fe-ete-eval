@@ -2,16 +2,18 @@ import { useState } from 'react';
 import './NewContentTypeModal.css';
 import propTypes from 'prop-types';
 
-const NewContentTypeModal = ({}) => {
-  const [contentTypeName, setContentTypeName] = useState({});
-
+const NewContentTypeModal = ({ handleSubmitNewContentType }) => {
+  const [contentTypeName, setContentTypeName] = useState(null);
   //   const fieldNames = contentTypeFields.map((field) => field.name);
 
   const handleChange = (event) => {
     setContentTypeName(event.target.value);
   };
 
-  const handleSubmit = (event) => {};
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    await handleSubmitNewContentType(contentTypeName);
+  };
 
   return (
     <div className='entryModal'>
@@ -22,11 +24,7 @@ const NewContentTypeModal = ({}) => {
         <div className='modalBody'>
           <form>
             <label>{'Name of the content type'}</label>
-            <input
-              type='text'
-              value={contentTypeName[field]}
-              onChange={(event) => handleChange(event, field)}
-            />
+            <input type='text' value={contentTypeName} onChange={(event) => handleChange(event)} />
           </form>
         </div>
         <div className='modalFooter'>
@@ -50,6 +48,7 @@ NewContentTypeModal.propTypes = {
     }),
   ),
   handleAddNewEntry: propTypes.func.isRequired,
+  handleSubmitNewContentType: propTypes.func.isRequired,
 };
 
 export default NewContentTypeModal;

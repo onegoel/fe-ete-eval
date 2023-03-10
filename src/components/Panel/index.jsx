@@ -2,7 +2,12 @@ import './Panel.css';
 import { FaDotCircle } from 'react-icons/fa';
 import propTypes from 'prop-types';
 
-const Panel = ({ allContentTypes, handleClickedCollectionType }) => {
+const Panel = ({
+  allContentTypes,
+  handleClickedCollectionType,
+  setShowCollections,
+  setCurrentView,
+}) => {
   return (
     <div>
       <header className='panelHeader'>
@@ -18,12 +23,18 @@ const Panel = ({ allContentTypes, handleClickedCollectionType }) => {
                 key={index}
                 onClick={() => handleClickedCollectionType(contentType.id)}
               >
-                <FaDotCircle />
+                <FaDotCircle style={({ color: 'white' }, { padding: '5px' })} />
                 <span>{contentType.name}</span>
               </div>
             ))}
           </div>
-          <div className='contentTypeBuilder'>
+          <div
+            className='contentTypeBuilder'
+            onClick={() => {
+              setCurrentView('Content Types');
+              setShowCollections(false);
+            }}
+          >
             <h3>CONTENT TYPE BUILDER</h3>
           </div>
         </div>
@@ -35,6 +46,8 @@ const Panel = ({ allContentTypes, handleClickedCollectionType }) => {
 Panel.propTypes = {
   allContentTypes: propTypes.array.isRequired,
   handleClickedCollectionType: propTypes.func.isRequired,
+  setShowCollections: propTypes.func.isRequired,
+  setCurrentView: propTypes.func.isRequired,
 };
 
 export default Panel;

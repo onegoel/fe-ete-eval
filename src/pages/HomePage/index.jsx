@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import './HomePage.css';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -6,7 +7,8 @@ import {
   getAllCollectionsByContentType,
   getFieldsByContentTypeId,
 } from '../../utils/common';
-import { Panel, TableRecord, CollectionEntryModal } from '../../components';
+import { FaHandPointRight, FaEdit } from 'react-icons/fa';
+import { Panel, TableRecord, CollectionEntryModal, NewContentTypeModal } from '../../components';
 import makeRequest from '../../utils/makeRequest';
 import { CREATE_COLLECTION } from '../../constants/apiEndPoints';
 
@@ -20,6 +22,9 @@ const HomePage = () => {
   const [showCollections, setShowCollections] = useState(false);
   const [currentView, setCurrentView] = useState('Content types');
   const [entryCount, setEntryCount] = useState(0);
+  const [createContentType, setCreateContentType] = useState(false);
+  const [contentTypeName, setContentTypeName] = useState(null);
+
   useEffect(
     () => async () => {
       const allContentTypesWithId = await getAllContentTypesWithId(navigate);
@@ -96,6 +101,10 @@ const HomePage = () => {
   //     });
   // };
 
+  const handleContentTypeCreation = (data) => {}; // eslint-disable-line
+
+  // const handleSubmitNewContentType = (data) => {};
+
   return (
     <div className='homePageContainer'>
       <div className='panelContainer'>
@@ -103,6 +112,8 @@ const HomePage = () => {
           allContentTypes={allContentTypes}
           handleClickedCollectionType={handleClickedCollectionType}
           setShowCollections={setShowCollections}
+          setCreateContentType={setCreateContentType}
+          setCurrentView={setCurrentView}
         />
       </div>
       <div className='contentContainer'>
@@ -110,32 +121,57 @@ const HomePage = () => {
           <p>{currentView}</p>
         </div>
         <div className='contentBody'>
-          {showCollections === true && (
-            <div className='tableHeader'>
-              <div className='tableHeading'>
-                <strong>{`${entryCount} new entries made`}</strong>
+          {showCollections === true ? (
+            <>
+              <div className='tableHeader'>
+                <div className='tableHeading'>
+                  <strong>{`${entryCount} new entries made`}</strong>
+                </div>
+                <div
+                  className='addNewEntry'
+                  onClick={async () => {
+                    await fieldsOfContentType(clickedContentTypeId);
+                    console.log(selectedContentTypeFields);
+                    setShowEntryForm(true);
+                  }}
+                >
+                  {'Add a new entry'}
+                </div>
               </div>
-              <div
-                className='addNewEntry'
-                onClick={async () => {
-                  await fieldsOfContentType(clickedContentTypeId);
-                  console.log(selectedContentTypeFields);
-                  setShowEntryForm(true);
-                }}
-              >
-                Add a new entry
+              <div className='tableRecordsContainer'>
+                <TableRecord
+                  collection={collectionRecords}
+                  // handleEditingFieldValue={handleEditingFieldValue}
+                  // handleDeleteCollection={handleDeleteCollection}
+                />
+              </div>
+            </>
+          ) : (
+            <div className='contentTypeBuilderContainer'>
+              <div className='allTypes'>
+                <button>{'+ NEW TYPE'}</button>
+                {allContentTypes.map((contentType, index) => (
+                  <div
+                    className='collectionType'
+                    key={index}
+                    onClick={() => setClickedContentTypeId(contentType.id)}
+                  >
+                    <FaHandPointRight style={({ color: 'white' }, { padding: '5px' })} />
+                    <span>{contentType.name}</span>
+                  </div>
+                ))}
+              </div>
+              <div className='fieldDetails'>
+                <div className='fieldDetailsHeader'>
+                  <span className='headerSpan'>
+                    <h1>Content Type</h1>
+                    <FaEdit style={({ color: 'white' }, { padding: '5px' })} />
+                  </span>
+                </div>
               </div>
             </div>
           )}
-          <div className='tableRecordsContainer'>
-            {collectionRecords && (
-              <TableRecord
-                collection={collectionRecords}
-                // handleEditingFieldValue={handleEditingFieldValue}
-                // handleDeleteCollection={handleDeleteCollection}
-              />
-            )}
-          </div>
+
           {showEntryForm === true &&
             clickedContentTypeId !== null &&
             clickedContentTypeId !== undefined && (
@@ -144,6 +180,12 @@ const HomePage = () => {
                 handleAddNewEntry={handleAddNewEntry}
               />
             )}
+          {createContentType === true && (
+            <NewContentTypeModal
+              handleContentTypeCreation={handleContentTypeCreation}
+              setCreateContentType={setCreateContentType}
+            />
+          )}
         </div>
       </div>
     </div>
