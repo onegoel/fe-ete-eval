@@ -1,0 +1,85 @@
+.homePageContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  color: #a1a0a0;
+}
+
+.contentHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  color: #1c1c1c;
+  font-size: 32px;
+  height: 103px;
+}
+
+.contentHeader > p {
+  padding-left: 16px;
+}
+
+.contentBody {
+  background-color: #d4e5ff;
+  flex-grow: 1;
+  width: 100%;
+}
+.panelContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 30%;
+}
+
+.tableRecordsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.addNewEntry {
+  color: #7117ee;
+  font-size: 1rem;
+}
+
+.addNewEntry:hover {
+  color: #7117ee;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.tableHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+  border-radius: 10px 10px 0 0;
+  margin: 1rem 0;
+}
+
+.tableHeading {
+  padding: 1rem;
+  margin: 0.8rem;
+  font-weight: 600;
+  font-size: 2rem;
+}

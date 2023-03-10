@@ -1,0 +1,23 @@
+.tableRecord {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  text-align: center;
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 10px;
+  color: #a1a0a0;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  margin: 1rem 0;
+}
+
+.tableRecordItem {
+  padding: 1rem;
+  margin: 0.8rem;
+}
+
+.actions {
+  align-self: center;
+}
