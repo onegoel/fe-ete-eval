@@ -24,9 +24,9 @@ const makeRequest = async (
         if (navigate) {
             const errorStatus = e.response?.status;
             if (errorStatus) {
-                navigate(`${ERROR_ROUTE}/${errorStatus}`);
+                navigate(ERROR_ROUTE(errorStatus));
             } else {
-                navigate(ERROR_ROUTE);
+                navigate(ERROR_ROUTE(500));
             }
         }
     }

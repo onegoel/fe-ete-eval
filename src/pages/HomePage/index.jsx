@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import './HomePage.css';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +9,7 @@ import {
 import { FaHandPointRight, FaEdit } from 'react-icons/fa';
 import { Panel, TableRecord, CollectionEntryModal, NewContentTypeModal } from '../../components';
 import makeRequest from '../../utils/makeRequest';
-import { CREATE_COLLECTION } from '../../constants/apiEndPoints';
+import { CREATE_COLLECTION, CREATE_CONTENT_TYPE } from '../../constants/apiEndPoints';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -23,7 +22,6 @@ const HomePage = () => {
   const [currentView, setCurrentView] = useState('Content types');
   const [entryCount, setEntryCount] = useState(0);
   const [createContentType, setCreateContentType] = useState(false);
-  const [contentTypeName, setContentTypeName] = useState(null);
 
   useEffect(
     () => async () => {
@@ -73,6 +71,10 @@ const HomePage = () => {
     setSelectedContentTypeFields(contentTypeFields);
   };
 
+  // const handleDisplayOfFieldsOfSelectedContentType = async (contentTypeId) => {
+  //   await fieldsOfContentType(contentTypeId);
+  // };
+
   // const handleDeleteCollection = (collectionId) => {
   //   makeRequest(DELETE_COLLECTION(collectionId), {}, navigate, 'api')
   //     .then((response) => {
@@ -101,9 +103,26 @@ const HomePage = () => {
   //     });
   // };
 
-  const handleContentTypeCreation = (data) => {}; // eslint-disable-line
-
-  // const handleSubmitNewContentType = (data) => {};
+  const handleSubmitNewContentType = (name) => {
+    console.log(name);
+    makeRequest(
+      CREATE_CONTENT_TYPE(name),
+      {
+        data: { name },
+      },
+      navigate,
+      'api',
+    )
+      .then((response) => {
+        console.log('response', response);
+        alert('Successfully created new content type');
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log('error', error);
+        alert(error.message);
+      });
+  };
 
   return (
     <div className='homePageContainer'>
@@ -149,12 +168,15 @@ const HomePage = () => {
           ) : (
             <div className='contentTypeBuilderContainer'>
               <div className='allTypes'>
-                <button>{'+ NEW TYPE'}</button>
+                <button onClick={() => setCreateContentType(true)}>{'+ NEW TYPE'}</button>
                 {allContentTypes.map((contentType, index) => (
                   <div
                     className='collectionType'
                     key={index}
-                    onClick={() => setClickedContentTypeId(contentType.id)}
+                    onClick={() => {
+                      setCreateContentType(contentType.name);
+                      setClickedContentTypeId(contentType.id);
+                    }}
                   >
                     <FaHandPointRight style={({ color: 'white' }, { padding: '5px' })} />
                     <span>{contentType.name}</span>
@@ -182,8 +204,9 @@ const HomePage = () => {
             )}
           {createContentType === true && (
             <NewContentTypeModal
-              handleContentTypeCreation={handleContentTypeCreation}
               setCreateContentType={setCreateContentType}
+              handleSubmitNewContentType={handleSubmitNewContentType}
+              createContentType={createContentType}
             />
           )}
         </div>

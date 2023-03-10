@@ -36,5 +36,13 @@ export const DELETE_COLLECTION = (collectionId) => ({
     method: 'delete'
 });
 
+export const CREATE_CONTENT_TYPE = (name) => ({
+    url: `/api/content/create`,
+    method: 'post',
+    data: {
+        name
+    }
+});
+
 
 

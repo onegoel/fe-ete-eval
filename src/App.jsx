@@ -24,7 +24,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path={ERROR_ROUTE} element={<ErrorPage />} />
+            <Route path={ERROR_ROUTE(':statusCode')} element={<ErrorPage />} />
           </Routes>
         </BrowserRouter>
       </AuthContext.Provider>

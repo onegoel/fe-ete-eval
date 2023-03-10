@@ -3,7 +3,7 @@ import './NewContentTypeModal.css';
 import propTypes from 'prop-types';
 
 const NewContentTypeModal = ({ handleSubmitNewContentType }) => {
-  const [contentTypeName, setContentTypeName] = useState(null);
+  const [contentTypeName, setContentTypeName] = useState('');
   //   const fieldNames = contentTypeFields.map((field) => field.name);
 
   const handleChange = (event) => {
@@ -47,7 +47,7 @@ NewContentTypeModal.propTypes = {
       name: propTypes.string.isRequired,
     }),
   ),
-  handleAddNewEntry: propTypes.func.isRequired,
+  // handleAddNewEntry: propTypes.func.isRequired,
   handleSubmitNewContentType: propTypes.func.isRequired,
 };
 
