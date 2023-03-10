@@ -31,4 +31,10 @@ export const UPDATE_FIELD_VALUE = (collectionId, fieldId, data) => ({
     }
 });
 
+export const DELETE_COLLECTION = (collectionId) => ({
+    url: `/api/collection/${collectionId}`,
+    method: 'delete'
+});
+
+
 

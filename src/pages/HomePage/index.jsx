@@ -5,7 +5,7 @@ import {
   getAllContentTypesWithId,
   getAllCollectionsByContentType,
   getFieldsByContentTypeId,
-} from '../../utils/common'; //eslint-disable-line
+} from '../../utils/common';
 import { Panel, TableRecord, CollectionEntryModal } from '../../components';
 import makeRequest from '../../utils/makeRequest';
 import { CREATE_COLLECTION } from '../../constants/apiEndPoints';
@@ -14,10 +14,12 @@ const HomePage = () => {
   const navigate = useNavigate();
   const [allContentTypes, setAllContentTypes] = useState([]);
   const [collectionRecords, setCollectionRecords] = useState([]);
-  const [clickedContentTypeId, setClickedContentTypeId] = useState(null); //eslint-disable-line
-  const [showEntryForm, setShowEntryForm] = useState(false); //eslint-disable-line
-  const [selectedContentTypeFields, setSelectedContentTypeFields] = useState([]); //eslint-disable-line
-
+  const [clickedContentTypeId, setClickedContentTypeId] = useState(null);
+  const [showEntryForm, setShowEntryForm] = useState(false);
+  const [selectedContentTypeFields, setSelectedContentTypeFields] = useState([]);
+  const [showCollections, setShowCollections] = useState(false);
+  const [currentView, setCurrentView] = useState('Content types');
+  const [entryCount, setEntryCount] = useState(0);
   useEffect(
     () => async () => {
       const allContentTypesWithId = await getAllContentTypesWithId(navigate);
@@ -32,6 +34,10 @@ const HomePage = () => {
     console.log('collectionRecords', collectionRecords);
     setCollectionRecords(collectionRecords);
     setClickedContentTypeId(contentTypeId);
+    setShowCollections(true);
+    setCurrentView(
+      allContentTypes.filter((contentType) => contentType.id === contentTypeId)[0].name,
+    );
   };
 
   const handleAddNewEntry = (data) => {
@@ -53,6 +59,7 @@ const HomePage = () => {
         console.log('error', error);
         alert('Error while adding new entry');
       });
+    setEntryCount(entryCount + 1);
   };
 
   const fieldsOfContentType = async (contentTypeId) => {
@@ -61,9 +68,33 @@ const HomePage = () => {
     setSelectedContentTypeFields(contentTypeFields);
   };
 
-  const handleEditingFieldValue = async (collectionId, fieldId, value) => {};
+  // const handleDeleteCollection = (collectionId) => {
+  //   makeRequest(DELETE_COLLECTION(collectionId), {}, navigate, 'api')
+  //     .then((response) => {
+  //       console.log('response', response);
+  //       alert('Collection deleted successfully');
+  //       window.location.reload();
+  //     })
+  //     .catch((error) => {
+  //       console.log('error', error);
+  //       alert('Error while deleting collection');
+  //     });
+  // };
 
-  console.log(collectionRecords);
+  // const handleEditingFieldValue = async (collectionId, fieldId, value) => {
+  //   makeRequest(UPDATE_FIELD_VALUE(collectionId, fieldId, value), {
+  //     body: { value },
+  //   })
+  //     .then((response) => {
+  //       console.log('response', response);
+  //       alert('Field value updated successfully');
+  //       window.location.reload();
+  //     })
+  //     .catch((error) => {
+  //       console.log('error', error);
+  //       alert('Error while updating field value');
+  //     });
+  // };
 
   return (
     <div className='homePageContainer'>
@@ -71,33 +102,37 @@ const HomePage = () => {
         <Panel
           allContentTypes={allContentTypes}
           handleClickedCollectionType={handleClickedCollectionType}
+          setShowCollections={setShowCollections}
         />
       </div>
       <div className='contentContainer'>
         <div className='contentHeader'>
-          <p>Content type/name</p>
+          <p>{currentView}</p>
         </div>
         <div className='contentBody'>
-          <div className='tableHeader'>
-            <div className='tableHeading'>
-              <strong>13 new entries made</strong>
+          {showCollections === true && (
+            <div className='tableHeader'>
+              <div className='tableHeading'>
+                <strong>{`${entryCount} new entries made`}</strong>
+              </div>
+              <div
+                className='addNewEntry'
+                onClick={async () => {
+                  await fieldsOfContentType(clickedContentTypeId);
+                  console.log(selectedContentTypeFields);
+                  setShowEntryForm(true);
+                }}
+              >
+                Add a new entry
+              </div>
             </div>
-            <div
-              className='addNewEntry'
-              onClick={async () => {
-                await fieldsOfContentType(clickedContentTypeId);
-                console.log(selectedContentTypeFields);
-                setShowEntryForm(true);
-              }}
-            >
-              Add a new entry
-            </div>
-          </div>
+          )}
           <div className='tableRecordsContainer'>
             {collectionRecords && (
               <TableRecord
                 collection={collectionRecords}
-                handleEditingFieldValue={handleEditingFieldValue}
+                // handleEditingFieldValue={handleEditingFieldValue}
+                // handleDeleteCollection={handleDeleteCollection}
               />
             )}
           </div>
